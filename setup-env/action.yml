@@ -51,10 +51,10 @@ runs:
               fetch-depth: "${{ inputs.fetch-all == 'true' && '0' || '1' }}"
 
         - name: Install pnpm
+          if: ${{ inputs.package-manager == 'pnpm' }}
           uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d306 # v4.2.0
           with:
               run_install: false
-          if: ${{ inputs.package-manager == 'pnpm' }}
 
         - name: Setup node
           uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79 # v6.1.0
@@ -64,6 +64,6 @@ runs:
               registry-url: ${{ inputs.registry-url }}
 
         - name: Install dependencies
+          if: ${{ inputs.auto-install}}
           shell: bash
           run: ${{ inputs.package-manager }} install ${{ inputs.no-frozen-lockfile == 'true' && '--no-frozen-lockfile' || '' }}
-          if: ${{ inputs.auto-install}}
