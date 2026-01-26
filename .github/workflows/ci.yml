@@ -11,12 +11,12 @@ on:
       os-matrix:
         required: false
         type: string
-        default: '"ubuntu-latest", "windows-latest"'
+        default: '"ubuntu-latest", "windows-latest", "macos-latest"'
 
       node-versions:
         required: false
         type: string
-        default: '20,22,24,25'
+        default: 'lts/*'
 
       typecheck:
         required: false
@@ -36,7 +36,7 @@ on:
       test:
         required: false
         type: string
-        default: pnpm run test
+        default: pnpm run test --coverage
 
       skip-lint:
         required: false
@@ -54,28 +54,11 @@ on:
         default: false
 
 jobs:
-  lint:
-    runs-on: ${{ inputs.primary-os }}
-    if: ${{ !inputs.skip-lint }}
-    steps:
-      - name: Setup environment
-        uses: bjf5201/workflows/setup-env@v1.0.2
-        with:
-          primary-os: ${{ inputs.primary-os }}
-
-      - name: Lint
-        run: ${{ inputs.lint }}
-        if: ${{ inputs.lint != '' }}
-
-      - name: Type Check
-        run: ${{ inputs.typecheck }}
-        if: ${{ inputs.typecheck != '' }}
-
-      - name: Build
-        run: ${{ inputs.build }}
-        if: ${{ inputs.build-for-lint }}
 
   test:
+    permissions:
+      id-token: write
+      contents: read
     strategy:
       matrix:
         os: ${{ fromJson(format('[{0}]', inputs.os-matrix)) }}
@@ -85,7 +68,7 @@ jobs:
     if: ${{ !inputs.skip-test }}
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Setup JS
+      - name: Setup environment
         uses: bjf5201/workflows/setup-env@v1.0.2
         with:
           node-version: ${{ matrix.node-version }}
@@ -93,5 +76,35 @@ jobs:
       - name: Build
         run: ${{ inputs.build }}
 
-      - name: Unit Test
+      - name: Test
         run: ${{ inputs.test }}
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          use_oidc: true
+          directory: ./coverage
+
+
+  lint:
+    runs-on: ${{ inputs.primary-os }}
+    if: ${{ !inputs.skip-lint }}
+    steps:
+      - name: Setup environment
+        uses: bjf5201/workflows/setup-env@v1.0.2
+        with:
+          primary-os: ${{ inputs.primary-os }}
+
+      - name: Build
+        run: ${{ inputs.build }}
+        if: ${{ inputs.build-for-lint }}
+
+      - name: Lint
+        run: ${{ inputs.lint }}
+        if: ${{ inputs.lint != '' }}
+
+      - name: Type Check
+        run: ${{ inputs.typecheck }}
+        if: ${{ inputs.typecheck != '' }}
+
+
