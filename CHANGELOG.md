@@ -15,4 +15,3 @@
 ### ❤️ Contributors
 
 - Bethany Fannin <contact@bethanyfannin.com>
-
