@@ -2,6 +2,7 @@
   "name": "workflows",
   "version": "1.1.0",
   "description": "My personal GitHub Actions workflows for automating CI/CD and other tasks.",
+  "type": "module",
   "scripts": {
     "prepare": "node .husky/install.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
