@@ -74,12 +74,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Build
+        if: ${{ inputs.build != ''}}
         run: ${{ inputs.build }}
 
       - name: Test
         run: ${{ inputs.test }}
 
       - name: Upload coverage reports to Codecov
+        if: ${{ !inputs.test == '' || contains(inputs.test, '--coverage') }}
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           use_oidc: true
