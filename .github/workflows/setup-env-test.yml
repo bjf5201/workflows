@@ -1,0 +1,40 @@
+name: Test Setup Env Action
+
+on:
+  push:
+    branches: [main]
+  workflow_call:
+    inputs:
+      primary-os:
+        required: false
+        type: string
+        default: ubuntu-latest
+
+      os-matrix:
+        required: false
+        type: string
+        default: '"ubuntu-latest", "windows-latest", "macos-latest"'
+
+      node-versions:
+        required: false
+        type: string
+        default: 'lts/*'
+
+jobs:
+
+  test:
+    permissions:
+      id-token: write
+      contents: read
+    strategy:
+      matrix:
+        os: ${{ fromJson(format('[{0}]', inputs.os-matrix)) }}
+        node-version: ${{ fromJson(format('[{0}]', inputs.node-versions)) }}
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Setup environment
+        uses: bjf5201/workflows/setup-env@v1.0.2
+        with:
+          node-version: ${{ matrix.node-version }}
