@@ -1,0 +1,13 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  test-and-lint:
+    uses: bjf5201/workflows/.github/workflows/ci.yml@main
