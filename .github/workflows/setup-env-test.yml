@@ -23,18 +23,21 @@ on:
 jobs:
 
   test:
+    runs-on: 'ubuntu-latest'
     permissions:
       id-token: write
       contents: read
-    strategy:
-      matrix:
-        os: ${{ fromJson(format('[{0}]', inputs.os-matrix)) }}
-        node-version: ${{ fromJson(format('[{0}]', inputs.node-versions)) }}
-      fail-fast: false
-    runs-on: ${{ matrix.os }}
+  # strategy:
+  #    matrix:
+  #      os: ${{ fromJson(format('[{0}]', inputs.os-matrix)) }}
+  #      node-version: ${{ fromJson(format('[{0}]', inputs.node-versions)) }}
+  #    fail-fast: false
+  #  runs-on: ${{ matrix.os }}
 
     steps:
       - name: Setup environment
         uses: bjf5201/workflows/setup-env@main
         with:
-          node-version: ${{ matrix.node-version }}
+          persist-credentials: true
+          node-version: 22.13.1
+          # node-version: ${{ matrix.node-version }}
