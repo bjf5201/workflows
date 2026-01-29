@@ -35,6 +35,6 @@ jobs:
 
     steps:
       - name: Setup environment
-        uses: bjf5201/workflows/setup-env@v1.0.2
+        uses: bjf5201/workflows/setup-env@main
         with:
           node-version: ${{ matrix.node-version }}
