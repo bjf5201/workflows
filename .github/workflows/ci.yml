@@ -1,42 +1,52 @@
+# TODO: Change all inputs for node scripts (`typecheck`, `lint`, `build`, and `test` to simply the part that comes after `pnpm run` in order to reduce repetition. Then, for the job.<JOB-NAME>.steps.run key, combine `${{ }})
 name: CI
 
 on:
   workflow_call:
     inputs:
+      persist-credentials:
+        description: Whether to configure the token or SSH key with local git config
+        required: true
+        type: boolean
+        default: false
+      package-manager:
+        required: false
+        type: string
+        default: "pnpm"
       primary-os:
         required: false
         type: string
-        default: ubuntu-latest
+        default: "ubuntu-latest"
 
       os-matrix:
         required: false
         type: string
-        default: '"ubuntu-latest", "windows-latest", "macos-latest"'
+        default: '["ubuntu-latest", "windows-latest"]'
 
       node-versions:
         required: false
         type: string
-        default: 'lts/*'
+        default: '["20","22","24","25"]'
 
       typecheck:
         required: false
         type: string
-        default: pnpm run typecheck
+        default: "pnpm run typecheck"
 
       lint:
         required: false
         type: string
-        default: pnpm run lint
+        default: "pnpm run lint"
 
       build:
         required: false
         type: string
-        default: pnpm run build
+        default: "pnpm run build"
 
       test:
         required: false
         type: string
-        default: pnpm run test --coverage
+        default: "pnpm run test --coverage"
 
       skip-lint:
         required: false
@@ -51,7 +61,7 @@ on:
       build-for-lint:
         required: false
         type: boolean
-        default: false
+        default: true
 
 jobs:
 
@@ -59,19 +69,15 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    strategy:
-      matrix:
-        os: ${{ fromJson(format('[{0}]', inputs.os-matrix)) }}
-        node-version: ${{ fromJson(format('[{0}]', inputs.node-versions)) }}
-      fail-fast: false
 
     if: ${{ !inputs.skip-test }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ inputs.primary-os }}
     steps:
       - name: Setup environment
         uses: bjf5201/workflows/setup-env@main
         with:
-          node-version: ${{ matrix.node-version }}
+          package-manager: ${{ inputs.package-manager }}
+          node-version: ${{ inputs.node-versions }}
 
       - name: Build
         if: ${{ inputs.build != ''}}
@@ -81,7 +87,7 @@ jobs:
         run: ${{ inputs.test }}
 
       - name: Upload coverage reports to Codecov
-        if: ${{ !inputs.test == '' || contains(inputs.test, '--coverage') }}
+        if: ${{ inputs.test != '' && contains(inputs.test, '--coverage') }}
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           use_oidc: true
@@ -93,9 +99,10 @@ jobs:
     if: ${{ !inputs.skip-lint }}
     steps:
       - name: Setup environment
-        uses: bjf5201/workflows/setup-env@v1.0.2
+        uses: bjf5201/workflows/setup-env@main
         with:
-          primary-os: ${{ inputs.primary-os }}
+          package-manager: ${{ inputs.package-manager }}
+          node-version: "24"
 
       - name: Build
         run: ${{ inputs.build }}
