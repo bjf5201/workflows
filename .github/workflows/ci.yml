@@ -1,5 +1,5 @@
 # TODO: Change all inputs for node scripts (`typecheck`, `lint`, `build`, and `test` to simply the part that comes after `pnpm run` in order to reduce repetition. Then, for the job.<JOB-NAME>.steps.run key, combine `${{ }})
-name: CI
+name: CI Reusable Workflow
 
 on:
   workflow_call:
@@ -17,11 +17,6 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
-
-      os-matrix:
-        required: false
-        type: string
-        default: '["ubuntu-latest", "windows-latest"]'
 
       node-versions:
         required: false
@@ -46,7 +41,7 @@ on:
       test:
         required: false
         type: string
-        default: "pnpm run test --coverage"
+        default: "pnpm run test"
 
       skip-lint:
         required: false
@@ -74,7 +69,7 @@ jobs:
     runs-on: ${{ inputs.primary-os }}
     steps:
       - name: Setup environment
-        uses: bjf5201/workflows/setup-env@main
+        uses: bjf5201/workflows/setup-env@227bf1e1a4222c9b8d69d9b58217d50e82f90354
         with:
           package-manager: ${{ inputs.package-manager }}
           node-version: ${{ inputs.node-versions }}
@@ -99,7 +94,7 @@ jobs:
     if: ${{ !inputs.skip-lint }}
     steps:
       - name: Setup environment
-        uses: bjf5201/workflows/setup-env@main
+        uses: bjf5201/workflows/setup-env@227bf1e1a4222c9b8d69d9b58217d50e82f90354
         with:
           package-manager: ${{ inputs.package-manager }}
           node-version: "24"
