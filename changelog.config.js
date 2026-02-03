@@ -20,5 +20,6 @@ export default {
     commitMessage: 'chore(release): v{{newVersion}}',
     tagMessage: 'v{{newVersion}}',
     tagBody: 'v{{newVersion}}'
-  }
+  },
+  noAuthors: true,
 }
