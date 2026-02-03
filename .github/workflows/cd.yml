@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Setup JS
-        uses: bjf5201/workflows/setup-env@227bf1e1a4222c9b8d69d9b58217d50e82f90354
+        uses: bjf5201/workflows/setup-env@414d6419245bd729f6b72162a6e231c79d31e7bc
         with:
           fetch-all: true
 
