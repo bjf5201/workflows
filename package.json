@@ -4,7 +4,10 @@
   "description": "My personal GitHub Actions workflows for automating CI/CD and other tasks.",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "echo \"Linting package!\" && exit 0",
+    "build": "echo \"Building package!\" && exit 0",
+    "test": "vitest run",
+    "typecheck": "echo \"Typechecking stuff!\" && exit 0"
   },
   "keywords": [],
   "author": "Bethany Fannin <contact@bethanyfannin.com> (https://www.bethanyfannin.com)",
@@ -14,7 +17,8 @@
     "@commitlint/cli": "20.3.1",
     "@commitlint/config-conventional": "20.3.1",
     "commitizen": "4.3.1",
-    "cz-conventional-changelog": "3.3.0"
+    "cz-conventional-changelog": "3.3.0",
+    "vitest": "4.0.18"
   },
   "config": {
     "commitizen": {
