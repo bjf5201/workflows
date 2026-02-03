@@ -1,0 +1,35 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    commit-message:
+      prefix: "chore"
+      include: scope
+    schedule:
+      interval: weekly
+    groups:
+      actions-minor:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: npm
+    allow:
+      - dependency-type: "all"
+    directory: /
+    commit-message:
+      prefix: "chore"
+      include: scope
+    schedule:
+      interval: weekly
+    versioning-strategy: increase-if-necessary
+    groups:
+      pnpm-development:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+      pnpm-production:
+        dependency-type: production
+        update-types:
+          - patch
