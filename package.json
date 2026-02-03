@@ -4,20 +4,21 @@
   "description": "My personal GitHub Actions workflows for automating CI/CD and other tasks.",
   "type": "module",
   "scripts": {
-    "lint": "echo \"Linting package!\" && exit 0",
-    "build": "echo \"Building package!\" && exit 0",
+    "lint": "echo \"Linting package! (Not really, but in the future this will actually run eslint & prettier)\" && exit 0",
+    "build": "echo \"Building package! (Not really, but in the future it will actually build something using either tsdown or tsup)\" && exit 0",
     "test": "vitest run",
-    "typecheck": "echo \"Typechecking stuff!\" && exit 0"
+    "typecheck": "tsc"
   },
   "keywords": [],
   "author": "Bethany Fannin <contact@bethanyfannin.com> (https://www.bethanyfannin.com)",
   "license": "MIT",
-  "packageManager": "pnpm@10.28.1",
+  "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264",
   "devDependencies": {
     "@commitlint/cli": "20.3.1",
     "@commitlint/config-conventional": "20.3.1",
     "commitizen": "4.3.1",
     "cz-conventional-changelog": "3.3.0",
+    "typescript": "5.9.3",
     "vitest": "4.0.18"
   },
   "config": {
