@@ -36,7 +36,15 @@ jobs:
           git config --global user.name "Bethany Fannin"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+
       - name: Generate GitHub Changelog
+        if: ${{ inputs.github-release }}
+        run: pnpm dlx changelogen@v0.6.2 --release  # changelogen@v0.6.2
+        continue-on-error: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync Changelog to GitHub Release
         if: ${{ inputs.github-release }}
         # `--release` argument syncs the changelog and package.json with the GitHub Release
         run: pnpm dlx changelogen@v0.6.2 gh release # changelogen@v0.6.2
