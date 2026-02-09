@@ -69,7 +69,7 @@ jobs:
     runs-on: ${{ inputs.primary-os }}
     steps:
       - name: Setup environment
-        uses: bjf5201/workflows/setup-env@227bf1e1a4222c9b8d69d9b58217d50e82f90354
+        uses: bjf5201/workflows/setup-env@e49b5b062ee9d98dd1584d1686f548bacc9dd967
         with:
           package-manager: ${{ inputs.package-manager }}
           node-version: ${{ inputs.node-versions }}
@@ -94,7 +94,7 @@ jobs:
     if: ${{ !inputs.skip-lint }}
     steps:
       - name: Setup environment
-        uses: bjf5201/workflows/setup-env@227bf1e1a4222c9b8d69d9b58217d50e82f90354
+        uses: bjf5201/workflows/setup-env@e49b5b062ee9d98dd1584d1686f548bacc9dd967
         with:
           package-manager: ${{ inputs.package-manager }}
           node-version: "24"
